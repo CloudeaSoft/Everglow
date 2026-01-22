@@ -1,0 +1,84 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: |
+          touch .\Sources\Directory.Build.props
+          echo '<Project>
+                  <PropertyGroup>
+                    <TargetFramework>net8.0</TargetFramework>
+                    <ImplicitUsings>enable</ImplicitUsings>
+                    <PlatformTarget>AnyCPU</PlatformTarget>
+                    <LangVersion>preview</LangVersion>
+                    <NoWarn>$(NoWarn);CS0436</NoWarn>
+                    <Modules>AssetReplace;CagedDomain;EternalResolve;Example;Food;MEAC;Minortopography;Myth;Ocean;Plant;PlantAndFarm;SpellAndSkull;SubSpace;Yggdrasil</Modules>
+                    <DefineConstants>$(DefineConstants);$(Modules)</DefineConstants>
+                    <EnableModBuilder>false</EnableModBuilder>
+                    <EnablePathGenerator>true</EnablePathGenerator>
+                    <CompileEffect>true</CompileEffect>
+                    <NotCopyLocal>true</NotCopyLocal>
+                  </PropertyGroup>
+                  <ItemGroup>
+                    <AdditionalFiles Include="**\*.json" Pack="true" ModPath="%(Identity)" />
+                  </ItemGroup>
+                  <ItemGroup>
+                    <AdditionalFiles Include="**\*.atlas" Pack="true" ModPath="%(Identity)" />
+                  </ItemGroup>
+                  <ItemGroup>
+                    <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.5.11" />
+                    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+                      <PrivateAssets>all</PrivateAssets>
+                      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+                    </PackageReference>
+                    <Publicize Include="ReLogic" />
+                    <Publicize Include="MonoMod.RuntimeDetour" />
+                    <Publicize Include="MonoMod.Utils" />
+                    <AdditionalFiles Include="**\*.obj;**\*.bmp;**\*.mapio;**\*.ttf" Pack="true" ModPath="%(Identity)" Exclude="bin\**\*;obj\**\*" />
+                    <AdditionalFiles Include="$(MSBuildThisFileFullPath)" Pack="false" Visible="false" />
+                  </ItemGroup>
+                </Project>' > .\Sources\Directory.Build.props
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Pull TML
+      run: |
+          cd ..
+          mkdir ./tmod
+          touch tModLoader.targets
+
+          echo '<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+              <Import Project=".\tmod\tMLMod.targets" />
+          </Project>' > tModLoader.targets
+
+          cd ./tmod
+          wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+          unzip tModLoader.zip
+          cd ..
+          cd ./Everglow
+
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
