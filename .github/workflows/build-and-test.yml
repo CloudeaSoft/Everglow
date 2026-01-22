@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: .NET Build and Test
 
 on:
   push:
@@ -58,9 +58,7 @@ jobs:
                     <AdditionalFiles Include="$(MSBuildThisFileFullPath)" Pack="false" Visible="false" />
                   </ItemGroup>
                 </Project>' > .\Sources\Directory.Build.props
-
-    - name: Restore dependencies
-      run: dotnet restore
+          dotnet restore
 
     - name: Pull TML
       run: |
@@ -79,6 +77,6 @@ jobs:
           cd ./Everglow
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build -p:WarningLevel=0
     - name: Test
       run: dotnet test --no-build --verbosity normal
