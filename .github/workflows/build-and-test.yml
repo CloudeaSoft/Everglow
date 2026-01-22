@@ -77,8 +77,6 @@ jobs:
           cd ..
           cd ./Everglow
 
-    - name: Install MonoGame Pipeline 
-      run: choco install monogame -y
     - name: Build
       run: dotnet build -p:WarningLevel=0
     - name: Test
