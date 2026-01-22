@@ -1,4 +1,31 @@
 <Project>
+<Project>
+  <PropertyGroup>
+    <!-- Path to your vendored XNA DLLs -->
+    <XnaPipelinePath>$(MSBuildThisFileDirectory)Tools\</XnaPipelinePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core XNA runtime -->
+    <Reference Include="Microsoft.Xna.Framework">
+      <HintPath>$(XnaPipelinePath)Microsoft.Xna.Framework.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+
+    <Reference Include="Microsoft.Xna.Framework.Graphics">
+      <HintPath>$(XnaPipelinePath)Microsoft.Xna.Framework.Graphics.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+
+    <!-- The critical one for ShaderBuilder.exe -->
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline">
+      <HintPath>$(XnaPipelinePath)Microsoft.Xna.Framework.Content.Pipeline.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
+
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -31,4 +58,6 @@
     <AdditionalFiles Include="**\*.obj;**\*.bmp;**\*.mapio" Pack="true" ModPath="%(Identity)" Exclude="bin\**\*;obj\**\*" />
     <AdditionalFiles Include="$(MSBuildThisFileFullPath)" Pack="false" Visible="false" />
   </ItemGroup>
+
+
 </Project>
