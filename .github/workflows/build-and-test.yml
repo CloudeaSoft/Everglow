@@ -71,7 +71,8 @@ jobs:
           </Project>' > tModLoader.targets
 
           cd ./tmod
-          wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+          curl -L -o tModLoader.zip https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+          # wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
           unzip tModLoader.zip
           cd ..
           cd ./Everglow
