@@ -60,5 +60,27 @@
  	<Publicize Include=".\Tools\Microsoft.Xna.Framework.Content.Pipeline.dll" />
   </ItemGroup>
 
+<Target Name="InjectXnaIntoModBuilder" BeforeTargets="BuildEffect">
+  <PropertyGroup>
+    <ModBuilderToolsPath>$(UserProfile)\.nuget\packages\solaestas.tmodloader.modbuilder\1.5.11\tools\</ModBuilderToolsPath>
+  </PropertyGroup>
+
+  <Message Text="Copying XNA DLLs into ModBuilder tools folder: $(ModBuilderToolsPath)" Importance="high" />
+
+  <Copy
+    SourceFiles="Tools\Microsoft.Xna.Framework.dll"
+    DestinationFolder="$(ModBuilderToolsPath)"
+    SkipUnchangedFiles="true" />
+
+  <Copy
+    SourceFiles="Tools\Microsoft.Xna.Framework.Graphics.dll"
+    DestinationFolder="$(ModBuilderToolsPath)"
+    SkipUnchangedFiles="true" />
+
+  <Copy
+    SourceFiles="Tools\Microsoft.Xna.Framework.Content.Pipeline.dll"
+    DestinationFolder="$(ModBuilderToolsPath)"
+    SkipUnchangedFiles="true" />
+</Target>
 
 </Project>
