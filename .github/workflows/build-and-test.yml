@@ -78,6 +78,6 @@ jobs:
           cd ./Everglow
 
     - name: Build
-      run: dotnet build -p:WarningLevel=0
+      run: dotnet build -p:WarningLevel=0 -p:BuildEffects=false
     - name: Test
       run: dotnet test --no-build --verbosity normal
