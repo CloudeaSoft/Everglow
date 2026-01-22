@@ -1,5 +1,4 @@
 <Project>
-<Project>
   <PropertyGroup>
     <!-- Path to your vendored XNA DLLs -->
     <XnaPipelinePath>$(MSBuildThisFileDirectory)Tools\</XnaPipelinePath>
@@ -23,7 +22,6 @@
       <Private>true</Private>
     </Reference>
   </ItemGroup>
-</Project>
 
 
   <PropertyGroup>
@@ -57,6 +55,9 @@
     <Publicize Include="MonoMod.Utils" />
     <AdditionalFiles Include="**\*.obj;**\*.bmp;**\*.mapio" Pack="true" ModPath="%(Identity)" Exclude="bin\**\*;obj\**\*" />
     <AdditionalFiles Include="$(MSBuildThisFileFullPath)" Pack="false" Visible="false" />
+    <AdditionalFiles Include="$(MSBuildThisFileFullPath)" Pack="false" Visible="false" />
+    <AdditionalFiles Include=".\Tools\Microsoft.Xna.Framework.Content.Pipeline.dll" Pack="false" Visible="false" />
+ 	<Publicize Include=".\Tools\Microsoft.Xna.Framework.Content.Pipeline.dll" />
   </ItemGroup>
 
 
